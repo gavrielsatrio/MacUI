@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace MacUI
 {
@@ -21,6 +22,7 @@ namespace MacUI
         private int currentHeight = 600;
         private int currentX;
         private int currentY;
+        private int cornerRadius = 20;
 
         private Color redBackground = Color.FromArgb(255, 96, 92);
         private Color redBorder = Color.FromArgb(233, 76, 70);
@@ -31,6 +33,32 @@ namespace MacUI
         private Color greenBackground = Color.FromArgb(0, 202, 78);
         private Color greenBorder = Color.FromArgb(36, 182, 54);
         private Color greenHoverContent = Color.FromArgb(0, 100, 0);
+
+
+        // Rounded Corners
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+            (
+                int nLeftRect,
+                int nTopRect,
+                int nRightRect,
+                int nBottomRect,
+                int nWidthEllipse,
+                int nHeightEllipse
+            );
+
+
+        // Shadow
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassStyle |= 0x00020000;
+
+                return cp;
+            }
+        }
 
         public MacUIForm()
         {
@@ -43,7 +71,14 @@ namespace MacUI
             DrawButton(btnMinimize, yellowBackground, yellowBorder);
             DrawButton(btnFullscreen, greenBackground, greenBorder);
 
+            SetRoundedCorners();
+
             this.MaximizedBounds = Screen.GetWorkingArea(this);
+        }
+
+        private void SetRoundedCorners()
+        {
+            this.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, cornerRadius, cornerRadius));
         }
 
         private void DrawButton(PictureBox picBox, Color color, Color colorBorder)
@@ -52,7 +87,7 @@ namespace MacUI
             Bitmap btn = new Bitmap(size + 4, size + 4);
 
             Graphics canvas = Graphics.FromImage(btn);
-            canvas.SmoothingMode = SmoothingMode.AntiAlias;
+            canvas.SmoothingMode = SmoothingMode.HighQuality;
             canvas.FillEllipse(new SolidBrush(color), 0, 0, size, size);
             canvas.DrawEllipse(new Pen(colorBorder), 0, 0, size, size);
 
@@ -218,6 +253,8 @@ namespace MacUI
 
                 this.WindowState = FormWindowState.Minimized;
             }
+
+            SetRoundedCorners();
         }
 
         private void timerNormal_Tick(object sender, EventArgs e)
@@ -257,6 +294,8 @@ namespace MacUI
                     windowStatus = "Normal";
                 }
             }
+
+            SetRoundedCorners();
         }
 
         private void timerMaximize_Tick(object sender, EventArgs e)
@@ -266,6 +305,7 @@ namespace MacUI
                 int addition = 20;
 
                 this.Size = new Size(this.Size.Width + addition, this.Size.Height + addition);
+
                 if (windowStatus == "MinimizeFromMaximize")
                 {
                     this.Location = new Point(this.Location.X - (addition / 2), this.Location.Y - addition);
@@ -286,6 +326,8 @@ namespace MacUI
                 windowStatus = "Maximize";
                 this.WindowState = FormWindowState.Maximized;
             }
+
+            SetRoundedCorners();
         }
 
         private void btnClose_MouseLeave(object sender, EventArgs e)
@@ -316,17 +358,6 @@ namespace MacUI
         private void btnFullscreen_MouseLeave(object sender, EventArgs e)
         {
             DrawButton(btnFullscreen, greenBackground, greenBorder);
-        }
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                cp.ClassStyle |= 0x00020000;
-
-                return cp;
-            }
         }
     }
 }
