@@ -317,5 +317,16 @@ namespace MacUI
         {
             DrawButton(btnFullscreen, greenBackground, greenBorder);
         }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassStyle |= 0x00020000;
+
+                return cp;
+            }
+        }
     }
 }
