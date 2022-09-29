@@ -34,6 +34,9 @@ namespace MacUI
         private Color greenBorder = Color.FromArgb(36, 182, 54);
         private Color greenHoverContent = Color.FromArgb(0, 100, 0);
 
+        private Color almostWhite = Color.FromArgb(250, 250, 250);
+        private Color lightGray = Color.FromArgb(190, 190, 190);
+
 
         // Rounded Corners
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
@@ -55,10 +58,20 @@ namespace MacUI
             {
                 CreateParams cp = base.CreateParams;
                 cp.ClassStyle |= 0x00020000;
+                cp.ExStyle = cp.ExStyle | 0x20 | 0x8000000;
 
                 return cp;
             }
         }
+
+
+        // Border
+        //protected override void OnPaint(PaintEventArgs e)
+        //{
+        //    base.OnPaint(e);
+
+            
+        //}
 
         public MacUIForm()
         {
@@ -358,6 +371,72 @@ namespace MacUI
         private void btnFullscreen_MouseLeave(object sender, EventArgs e)
         {
             DrawButton(btnFullscreen, greenBackground, greenBorder);
+        }
+
+
+
+        private int resizeBeforeX = 0;
+        private string resizeDirection = "";
+        private bool isOnResizeMode = false;
+
+        private void MacUIForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isOnResizeMode)
+            {
+                if (resizeDirection == "left")
+                {
+                    this.Location = new Point(this.Location.X + (e.X - resizeBeforeX), this.Location.Y);
+                    this.Width = this.Width + (resizeBeforeX - e.X);
+                }
+                else if(resizeDirection == "right")
+                {
+                    this.Width = this.Width + (e.X - resizeBeforeX);
+
+                    if(resizeBeforeX != e.X)
+                    {
+                        resizeBeforeX = e.X;
+                    }
+                }
+
+                SetRoundedCorners();
+            }
+
+            if ((e.X >= 0 && e.X <= 4) || (e.X >= this.Width - 4 && e.X <= this.Width))
+            {
+                this.Cursor = Cursors.SizeWE;
+            }
+            else
+            {
+                this.Cursor = Cursors.Default;
+            }
+        }
+
+        private void MacUIForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            if(this.Cursor == Cursors.SizeWE)
+            {
+                if (e.X >= 0 && e.X <= 4)
+                {
+                    resizeDirection = "left";
+                }
+                else if(e.X >= this.Width - 4 && e.X <= this.Width)
+                {
+                    resizeDirection = "right";
+                }
+
+                isOnResizeMode = true;
+                resizeBeforeX = e.X;
+            }
+        }
+
+        private void MacUIForm_MouseUp(object sender, MouseEventArgs e)
+        {
+            if(isOnResizeMode)
+            {
+                resizeDirection = "";
+                isOnResizeMode = false;
+                resizeBeforeX = 0;
+            }
         }
     }
 }

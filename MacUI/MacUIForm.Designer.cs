@@ -49,7 +49,6 @@ namespace MacUI
             // panelTitleBar
             // 
             this.panelTitleBar.BackColor = System.Drawing.Color.White;
-            this.panelTitleBar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelTitleBar.Controls.Add(this.tableLayoutPanel1);
             this.panelTitleBar.Controls.Add(this.lblTitle);
             this.panelTitleBar.Dock = System.Windows.Forms.DockStyle.Top;
@@ -78,7 +77,7 @@ namespace MacUI
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(66, 22);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(66, 24);
             this.tableLayoutPanel1.TabIndex = 5;
             // 
             // btnFullscreen
@@ -126,9 +125,9 @@ namespace MacUI
             this.lblTitle.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitle.Location = new System.Drawing.Point(8, 8);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(782, 22);
+            this.lblTitle.Size = new System.Drawing.Size(784, 24);
             this.lblTitle.TabIndex = 4;
-            this.lblTitle.Text = "TitleLabel";
+            this.lblTitle.Text = "DefaultTitleLabel";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblTitle_MouseDown);
             this.lblTitle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lblTitle_MouseMove);
@@ -163,6 +162,9 @@ namespace MacUI
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MacUI Library Form";
             this.Load += new System.EventHandler(this.MacUIForm_Load);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MacUIForm_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MacUIForm_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MacUIForm_MouseUp);
             this.Resize += new System.EventHandler(this.MacUIForm_Resize);
             this.panelTitleBar.ResumeLayout(false);
             this.panelTitleBar.PerformLayout();
