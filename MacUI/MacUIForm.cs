@@ -70,8 +70,21 @@ namespace MacUI
         //{
         //    base.OnPaint(e);
 
-            
+
         //}
+
+        public override string Text {
+            get
+            {
+                return base.Text;
+            } 
+            set
+            {
+                lblTitle.Text = value;
+                base.Text = value;
+                Invalidate();
+            }  
+        }
 
         public MacUIForm()
         {

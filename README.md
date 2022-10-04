@@ -26,17 +26,6 @@ public partial class YourFormName : Form
 public partial class YourFormName : MacUIForm
 ```
 
-After you inherit the MacUIForm, add this code to your `Form_Load()` event change the title based on your form's title
-```cs
-public partial class YourFormName : MacUIForm
-{
-    private void YourFormName_Load(object sender, EventArgs e)
-    {
-        lblTitle.text = this.Text;
-    }
-}
-```
-
 
 ## Preview
 ![Example application preview](https://raw.githubusercontent.com/gavrielsatrio/MacUI/main/Preview.png "MacUI-Kit Application Preview")
