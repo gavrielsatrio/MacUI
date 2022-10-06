@@ -4,11 +4,16 @@ This library allows you to make a windows forms application with beautifully Mac
 
 ## Getting Started
 These instructions will get you the MacUI library installed on your Windows Forms Application project :
-- Download the library file `(.dll)` from this [link](https://github.com/gavrielsatrio/MacUI/blob/main/MacUI.dll)
+
+#### Using dll file :
+- Download the library file `(.dll)` from this [link](https://github.com/gavrielsatrio/MacUI/raw/main/MacUI.dll)
 - Open your Windows Forms Application project on Visual Studio (or create a new one)
 - Add references to your project
 - Browse for the `MacUI.dll` that you downloaded before
 - Add that library to the project
+
+#### Using NuGet packages :
+- Add NuGet Package to your project (or you can download the NuGet Package file [here](https://www.nuget.org/packages/MacUI/)
 
 
 ## How to use
